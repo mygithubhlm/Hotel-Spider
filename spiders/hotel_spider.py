@@ -308,6 +308,9 @@ class HotelSpider(Spider):
         new_tags = " ".join(tags)
         new_traffic = city + " " + location + " " + address + " " + road + " " + zone
         # save hotel information
+
+        Hotel.objects.filter(name=title).delete()
+
         newHotel = Hotel(name=title, addr=address, desc=new_desc, policy=new_policy, facilities=new_facilities,
                          traffic=new_traffic, score=commnet_score, tags=new_tags)
         newHotel.save()
@@ -475,9 +478,14 @@ class HotelSpider(Spider):
                     new_user_name = user_name.replace(
                         "\n", "").replace("\r\n", "")
                     # print "save user informations!"
+
+                    Customer.objects.update_or_create(name=new_user_name, defaults={'user_level':level, 'total_comment':int(comment),
+                                           'useful_num':int(commented), 'upload_img_num':int(imgs)})
+                    '''
                     newCustomer = Customer(name=new_user_name, user_level=level, total_comment=int(comment),
                                            useful_num=int(commented), upload_img_num=int(imgs))
                     newCustomer.save()
+                    '''
 
                     new_context = context.replace("\n", "").replace("\r\n", "")
 
