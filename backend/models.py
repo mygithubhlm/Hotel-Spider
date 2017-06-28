@@ -97,12 +97,14 @@ class Comment(models.Model):
     class Meta:
         db_table = "comment"
 
-#@dahude
+# @dahude
+
+
 class NewsWebsite(models.Model):
-    number = models.CharField(max_length=45) #the number symbol of an article
-    text = models.TextField(blank=True,null=True)
-    letter = models.TextField(blank=True,null=True)
-    summarization = models.TextField(blank=True,null=True)
+    number = models.CharField(max_length=45) # the number symbol of an article
+    text = models.TextField(blank=True, null=True)
+    letter = models.TextField(blank=True, null=True)
+    summarization = models.TextField(blank=True, null=True)
     """docstring for NewsWebsite"""
     def __unicode__(self):
         return self.number

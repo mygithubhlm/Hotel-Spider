@@ -71,7 +71,7 @@
     - from backend.tasks import *
     - from sentiment_analysis.celery import app
     - crawl_machine1.apply_async(args=('http://hotels.ctrip.com/hotel/2906601.html',))
-    - crawl_machine1.apply_async(args=('http://sports.qq.com/a/20170628/021909.htm',))
+    - crawl_machine1.apply_async(args=('http://sports.qq.com/a/20170628/026125.htm',))
 
 #### 连接到服务器
 

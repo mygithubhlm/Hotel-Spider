@@ -111,7 +111,8 @@ class HotelSpider(Spider):
             browser.quit()
             os._exit(0)
 
-        newCrawlWebsite[0].desc = title
+        newCrawlWebsite[0].desc = title[0]
+        # print "title", title[0]
         newCrawlWebsite[0].lock = True
         newCrawlWebsite[0].done = False
         newCrawlWebsite[0].lastest_time = localtime
@@ -119,37 +120,38 @@ class HotelSpider(Spider):
         article = sel.xpath('//div[@class="Cnt-Main-Article-QQ"]/p/text()')
         # print "len article", len(article)
         article_ = ""
-        f = open(self.commentLog, 'w')
+        f = open("article.txt", 'w')
         for x in range(1, len(article)+1):
             # print "len:", len(article[x-1])
-            con = article[x-1].extract()
-            article_ = article_ + con
-            f.write(article[x-1].extract()+"\r\n")
+            con = article[x-1].extract().strip()
+            if con :
+                article_ = article_ + con
+                f.write(con+"\r\n")
         f.close()
 
-        text = codecs.open(self.commentLog, 'r', 'utf-8').read()
+        text = codecs.open("article.txt", 'r', 'utf-8').read()
         tr4w = TextRank4Keyword()
         tr4w.analyze(text=text, lower=True, window=2)  # py2中text必须是utf8编码的str或者unicode对象，py3中必须是utf8编码的bytes或者str对象
 
-        p = open(self.log, 'w')
+        # p = open(self.log, 'w')
         count = 0
         letter = ""
         for item in tr4w.get_keywords(20, word_min_len=1):
-            p.write(item.word+"\r\n")
+            # p.write(item.word+"\r\n")
             letter = letter + "\n"+item.word
             count = count + 1
             if count==5:
                 break
 
-        p.close()
-        q = open(self.elong_log, 'w')
+        # p.close()
+        # q = open(self.elong_log, 'w')
         summarization = ""
         tr4s = TextRank4Sentence()
         tr4s.analyze(text=text, lower=True, source = 'all_filters')
         for item in tr4s.get_key_sentences(num=3):
             summarization = summarization + "\n"+item.sentence
-            q.write(item.sentence+"\r\n")  # index是语句在文本中位置，weight是权重
-        q.close()
+            # q.write(item.sentence+"\r\n")  # index是语句在文本中位置，weight是权重
+        # q.close()
         newNewsWebsite = NewsWebsite(number=self.log, text=article_, letter=letter, summarization=summarization)
 
         newNewsWebsite.save()
@@ -476,8 +478,6 @@ class HotelSpider(Spider):
                     newCustomer = Customer(name=new_user_name, user_level=level, total_comment=int(comment),
                                            useful_num=int(commented), upload_img_num=int(imgs))
                     newCustomer.save()
-
-                    #
 
                     new_context = context.replace("\n", "").replace("\r\n", "")
 
