@@ -25,7 +25,7 @@ import codecs
 from textrank4zh import TextRank4Keyword, TextRank4Sentence
 
 from scrapy.spiders import Rule
-from scrapy.linkextractor import LinkExtractor
+from scrapy.linkextractors import LinkExtractor
 
 class HotelSpider(Spider):
     # log.start("log",loglevel='INFO')

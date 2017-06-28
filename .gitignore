@@ -10,3 +10,11 @@ logs
 *.sublime-workspace
 .vscode/
 .idea/
+
+# Python:
+*.py[cod]
+*.so
+*.egg
+*.egg-info
+dist
+build
