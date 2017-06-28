@@ -5,6 +5,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
+# from pyhdfs import *
 from selenium import webdriver
 from scrapy.spiders import Spider
 from scrapy.selector import Selector
@@ -167,6 +168,13 @@ class HotelSpider(Spider):
             self.parseCtrip(response)
         else:
             self.parseTencent(response)
+        
+        '''
+        # 预留Hadoop接口
+        client = HdfsClient(hosts="106.14.218.42:50070")
+        client.copy_from_local("记录.txt","/try1/record2.txt")
+        client.copy_to_local('/try1/record2.txt','record.txt')
+        '''
 
     def parseCtrip(self, response):
         '''Hotel.objects.all().delete()
