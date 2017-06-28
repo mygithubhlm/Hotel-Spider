@@ -42,7 +42,7 @@
 
 4. [云部署的url](http://118.89.203.58:8001/admin)
     - 账号: crawl
-    - 密码： crawl
+    - 密码： crawltest
 
 ---
 

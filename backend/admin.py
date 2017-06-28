@@ -23,6 +23,8 @@ class RoomTypeAdmin(admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     pass
 
+class NewsWebsiteAdmin(admin.ModelAdmin):
+    pass
 
 
 
@@ -31,3 +33,4 @@ admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Hotel, HotelAdmin)
 admin.site.register(RoomType, RoomTypeAdmin)
 admin.site.register(Comment, CommentAdmin)
+admin.site.register(NewsWebsite, NewsWebsiteAdmin)
