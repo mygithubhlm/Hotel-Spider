@@ -101,7 +101,7 @@ class HotelSpider(Spider):
         browser.get(response.url)
         sel = Selector(text = browser.page_source)
         title = sel.xpath('//h1/text()').extract()
-
+        title = title[0] if title else ""
         localtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         # 存入数据库
         # 如果正在爬取则取消当前任务
@@ -111,7 +111,7 @@ class HotelSpider(Spider):
             browser.quit()
             os._exit(0)
 
-        newCrawlWebsite[0].desc = title[0]
+        newCrawlWebsite[0].desc = title
         # print "title", title[0]
         newCrawlWebsite[0].lock = True
         newCrawlWebsite[0].done = False
