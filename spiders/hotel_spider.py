@@ -111,9 +111,9 @@ class HotelSpider(Spider):
         # 如果正在爬取则取消当前任务
         newCrawlWebsite = CrawlWebsite.objects.get_or_create(url=self.start_urls[0])
         
-        # if newCrawlWebsite[1]==False and newCrawlWebsite[0].lock:
-        #     browser.quit()
-        #     os._exit(0)
+        if newCrawlWebsite[1]==False and newCrawlWebsite[0].lock:
+            browser.quit()
+            os._exit(0)
 
         newCrawlWebsite[0].desc = title
         newCrawlWebsite[0].lock = True
