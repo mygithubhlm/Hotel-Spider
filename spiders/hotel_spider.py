@@ -66,7 +66,6 @@ class HotelSpider(Spider):
             self.commentLog = r"%s.txt" % num # 正文抽取
             self.log = r"%s" % num # 关键词
             self.elong_log = r"%ssummarization.txt" % num # 自动摘要
-            print "rules"
             self.rules = (Rule(LinkExtractor(allow=()), callback='parseTencent'),)
 
 
@@ -103,9 +102,7 @@ class HotelSpider(Spider):
         browser.get(response.url)
         sel = Selector(text = browser.page_source)
         title = sel.xpath('//h1/text()').extract()
-        # title = title[0]
-        print "title.len:", len(title)
-        print "title", title[0]
+
         localtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         # 存入数据库
         # 如果正在爬取则取消当前任务
@@ -123,21 +120,18 @@ class HotelSpider(Spider):
         article = sel.xpath('//div[@class="Cnt-Main-Article-QQ"]/p/text()')
         print "len article", len(article)
         article_ = ""
-        # iitem = scrapy.item()
         f = open(self.commentLog, 'w')
         for x in range(1, len(article)+1):
             # print "len:", len(article[x-1])
             con = article[x-1].extract()
-            print "con:", con
             article_ = article_ + con
-            print "article:", article_
             f.write(article[x-1].extract()+"\r\n")
         f.close()
-        print "121 line"
+
         text = codecs.open(self.commentLog, 'r', 'utf-8').read()
         tr4w = TextRank4Keyword()
         tr4w.analyze(text=text, lower=True, window=2)  # py2中text必须是utf8编码的str或者unicode对象，py3中必须是utf8编码的bytes或者str对象
-        #print( '关键词：' )
+
         p = open(self.log, 'w')
         count = 0
         letter = ""
@@ -147,25 +141,16 @@ class HotelSpider(Spider):
             count = count + 1
             if count==5:
                 break
-        print "136 line"
+
         p.close()
-        #print()
-        #print( '关键短语：' )
-        # for phrase in tr4w.get_keyphrases(keywords_num=20, min_occur_num= 2):
-        # p.write(phrase)
         q = open(self.elong_log, 'w')
         summarization = ""
         tr4s = TextRank4Sentence()
         tr4s.analyze(text=text, lower=True, source = 'all_filters')
-        # print( '摘要：' )
         for item in tr4s.get_key_sentences(num=3):
             summarization = summarization + "\n"+item.sentence
             q.write(item.sentence+"\r\n")  # index是语句在文本中位置，weight是权重
         q.close()
-        # iitem['article_'] = article_
-        # iitem['letter'] = letter
-        # iitem['summarization'] = summarization
-        print "self.log:", self.log
         newNewsWebsite = NewsWebsite(number=self.log, text=article_, letter=letter, summarization=summarization)
 
         newNewsWebsite.save()
@@ -178,7 +163,6 @@ class HotelSpider(Spider):
 
     #@dahude
     def parse(self, response):
-        print "hhhh"
         if response.url.find("ctrip") != -1:
             self.parseCtrip(response)
         else:
