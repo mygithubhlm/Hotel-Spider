@@ -49,8 +49,6 @@ class HotelSpider(Spider):
     dianping_root = r"http://hotels.ctrip.com/hotel/dianping/"
     dianping = r"http://hotels.ctrip.com/hotel/dianping/%s.html" % hotel_num
 
-
-
     def __init__(self, START_URL=None, *args, **kwargs):
         super(HotelSpider, self).__init__(*args, **kwargs)
         if START_URL.find("ctrip")!=-1:   # 携程
@@ -119,7 +117,7 @@ class HotelSpider(Spider):
         newCrawlWebsite[0].lastest_time = localtime
         newCrawlWebsite[0].save()
         article = sel.xpath('//div[@class="Cnt-Main-Article-QQ"]/p/text()')
-        print "len article", len(article)
+        # print "len article", len(article)
         article_ = ""
         f = open(self.commentLog, 'w')
         for x in range(1, len(article)+1):
@@ -266,13 +264,13 @@ class HotelSpider(Spider):
 
             for tt in t:
                 facilities.append(tt)
-                print "tt", tt
+                # print "tt", tt
 
         # tags
         sel_tags = response.xpath('//div[@class="special_label"]')[0]
         cons = sel_tags.xpath('./i')
 
-        print "len.cons:", len(cons)
+        # print "len.cons:", len(cons)
         tags = []
         for con in cons:
             tags.append(con.xpath('text()')[0].extract().strip())
@@ -316,16 +314,16 @@ class HotelSpider(Spider):
         # room_type
 
         room_table = response.xpath('//table[@id="J_RoomListTbl"]')
-        print "room_table", len(room_table)
+        # print "room_table", len(room_table)
         rooms = room_table.xpath(
             './tbody/tr[@class=""]/td/a[starts-with(@class,"room")]')
-        print "rooms", len(rooms)
+        # print "rooms", len(rooms)
         this_hotel = Hotel.objects.filter(name=title)[0]
         for room in rooms:
             room_name = room.xpath('text()')[0].extract().strip()
             newRoomType = RoomType(name=room_name, hotel=this_hotel)
             newRoomType.save()
-            print "room_name ", room_name
+            # print "room_name ", room_name
 
         '''sel_rooms = response.xpath('//ul[@class="searchresult_caplist"]')
         for room in sel_rooms:
@@ -373,7 +371,7 @@ class HotelSpider(Spider):
 
     def parse_comments(self, url, browser, hotel_name):
         ret = []
-        print "parse comments here!"
+        # print "parse comments here!"
         f = open(self.commentLog, 'w')
         f.write("\t".join(
             ["context", "user_name", "level", "comment", "commented", "imgs", "purpose",
@@ -383,7 +381,7 @@ class HotelSpider(Spider):
         )
         f.write("\r\n")
         f.close()
-        print "parse comments here!00000000000000000"
+        # print "parse comments here!00000000000000000"
         '''browser = webdriver.Firefox()'''
 
         first_page_url = r"%s%s_p1t0.html" % (
@@ -393,10 +391,10 @@ class HotelSpider(Spider):
 
         page_list = sel.xpath('//div[@class="c_page_list layoutfix"]/a')
         int_a_nums = len(page_list)
-        print "a_nums", int_a_nums
+        # print "a_nums", int_a_nums
         the_total = page_list[int_a_nums - 1]
         total = int(the_total.xpath('@value').extract()[0])
-        print "total_pages", total
+        # print "total_pages", total
 
         # total = 54
         # total = 167
@@ -408,7 +406,7 @@ class HotelSpider(Spider):
         for page in range(1, total + 1):
             links.append(r"%s%s_p%st0.html" %
                          (self.dianping_root, self.hotel_num, page))
-        print "here1111111111111111111111"
+        # print "here1111111111111111111111"
         for link in links:
             browser.get(link)
             time.sleep(2)
@@ -424,7 +422,7 @@ class HotelSpider(Spider):
             print("=====%s=====" % len(comment_objs))
 
             try:
-                print "try in:"
+                # print "try in:"
                 for comment_obj in comment_objs:
                     context = comment_obj.xpath(
                         './/div[@class="J_commentDetail"]/text()').extract()[0]
@@ -474,7 +472,7 @@ class HotelSpider(Spider):
                     # save customer information
                     new_user_name = user_name.replace(
                         "\n", "").replace("\r\n", "")
-                    print "save user informations!"
+                    # print "save user informations!"
                     newCustomer = Customer(name=new_user_name, user_level=level, total_comment=int(comment),
                                            useful_num=int(commented), upload_img_num=int(imgs))
                     newCustomer.save()
@@ -486,11 +484,11 @@ class HotelSpider(Spider):
                     temp_customer_id = Customer.objects.filter(
                         name=new_user_name)[0]
                     customer_id = temp_customer_id.id
-                    print "customer_id", customer_id
+                    # print "customer_id", customer_id
 
                     temp_hotel_id = Hotel.objects.filter(name=hotel_name)[0]
                     hotel_id = temp_hotel_id.id
-                    print "hotel_id", hotel_id
+                    # print "hotel_id", hotel_id
 
                     temp_roomtype_id = RoomType.objects.filter(name=room)
 
