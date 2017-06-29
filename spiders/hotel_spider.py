@@ -223,7 +223,7 @@ class HotelSpider(Spider):
         
         if newCrawlWebsite[1]==False and newCrawlWebsite[0].lock:
             browser.quit()
-            os._exit()
+            os._exit(0)
 
         newCrawlWebsite[0].desc = title
         newCrawlWebsite[0].lock = True
