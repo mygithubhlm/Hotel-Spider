@@ -102,6 +102,10 @@ class HotelSpider(Spider):
         
         if newCrawlWebsite[1]==False and newCrawlWebsite[0].lock:
             os._exit(0)
+        
+        newCrawlWebsite[0].lock = True
+        newCrawlWebsite[0].done = False
+        newCrawlWebsite[0].save()
 
         browser = webdriver.Firefox()
         browser.get(response.url)
@@ -113,8 +117,6 @@ class HotelSpider(Spider):
 
         newCrawlWebsite[0].desc = title
         # print "title", title[0]
-        newCrawlWebsite[0].lock = True
-        newCrawlWebsite[0].done = False
         newCrawlWebsite[0].lastest_time = localtime
         newCrawlWebsite[0].save()
         article = sel.xpath('//div[@class="Cnt-Main-Article-QQ"]/p/text()')
@@ -182,6 +184,10 @@ class HotelSpider(Spider):
         
         if newCrawlWebsite[1]==False and newCrawlWebsite[0].lock:
             os._exit(0)
+        
+        newCrawlWebsite[0].lock = True
+        newCrawlWebsite[0].done = False
+        newCrawlWebsite[0].save()
 
         '''Hotel.objects.all().delete()
         RoomType.objects.all().delete()
