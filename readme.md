@@ -43,6 +43,9 @@
 4. [云部署的url](http://118.89.203.58:8001/admin)
     - 账号: crawl
     - 密码： crawltest
+    - 设置`Periodic tasks`，其中`backend.tasks.crawl_machine1`是将任务添加到队列1，`backend.tasks.crawl_machine2`添加到队列2。在`Arguments`中添加参数，例如
+    `["http://hotels.ctrip.com/hotel/2906601.html"]`。`save`保存结果
+    - 爬取结果可在[backend](http://118.89.203.58:8001/admin/backend/)查看
 
 ---
 
