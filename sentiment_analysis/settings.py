@@ -40,6 +40,13 @@ CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
 CELERYD_MAX_TASKS_PER_CHILD = 1
 
 
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+import mimetypes
+mimetypes.add_type("text/css", ".css", True)
+
+
 # Application definition
 
 INSTALLED_APPS = [
