@@ -97,6 +97,12 @@ class HotelSpider(Spider):
 
     #@dahude
     def parseTencent(self, response):
+        # 如果正在爬取则取消当前任务
+        newCrawlWebsite = CrawlWebsite.objects.get_or_create(url=self.start_urls[0])
+        
+        if newCrawlWebsite[1]==False and newCrawlWebsite[0].lock:
+            os._exit(0)
+
         browser = webdriver.Firefox()
         browser.get(response.url)
         sel = Selector(text = browser.page_source)
@@ -104,12 +110,6 @@ class HotelSpider(Spider):
         title = title[0] if title else ""
         localtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         # 存入数据库
-        # 如果正在爬取则取消当前任务
-        newCrawlWebsite = CrawlWebsite.objects.get_or_create(url=self.start_urls[0])
-        
-        if newCrawlWebsite[1]==False and newCrawlWebsite[0].lock:
-            browser.quit()
-            os._exit(0)
 
         newCrawlWebsite[0].desc = title
         # print "title", title[0]
@@ -177,6 +177,12 @@ class HotelSpider(Spider):
         '''
 
     def parseCtrip(self, response):
+        # 如果正在爬取则取消当前任务
+        newCrawlWebsite = CrawlWebsite.objects.get_or_create(url=self.start_urls[0])
+        
+        if newCrawlWebsite[1]==False and newCrawlWebsite[0].lock:
+            os._exit(0)
+
         '''Hotel.objects.all().delete()
         RoomType.objects.all().delete()
         Customer.objects.all().delete()
@@ -218,13 +224,6 @@ class HotelSpider(Spider):
         localtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
         # 存入数据库
-        # 如果正在爬取则取消当前任务
-        newCrawlWebsite = CrawlWebsite.objects.get_or_create(url=self.start_urls[0])
-        
-        if newCrawlWebsite[1]==False and newCrawlWebsite[0].lock:
-            browser.quit()
-            os._exit(0)
-
         newCrawlWebsite[0].desc = title
         newCrawlWebsite[0].lock = True
         newCrawlWebsite[0].done = False
